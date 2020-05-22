@@ -86,7 +86,7 @@ def draw_rec(length, depth):
     if depth == 1:
         draw_depth_1(length)
     # TO-DO: Create the recursive case
-    # Hint: Use draw_depth_1 and the repetitive structure you've seen. Don't forget what makes something recursive!
+    # Hint: Use the repetitive structure you've seen. Don't forget what makes something recursive!
     else:
         draw_rec(length, 1)
         turtle.forward(length/2)

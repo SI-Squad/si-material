@@ -32,7 +32,7 @@ def draw_depth_3(length):
 def draw_rec(length, depth):
     # TODO: Create the base case
     # TODO: Create the recursive case
-    # Hint: Use draw_depth_1 and the repetitive structure you've seen. Don't forget what makes something recursive!
+    # Hint: the repetitive structure you've seen. Don't forget what makes something recursive!
     pass
 
 
