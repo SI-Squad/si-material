@@ -1,12 +1,16 @@
+"""
+The solution to the recursive upside-down triangle drawing.
+Created by Emma Lubes, eml5244, for the Academic Success Center Supplemental Instruction Program.
+"""
 import turtle
 
 
 # Draw depth of 1
 def draw_depth_1(length):
-    # TO-DO: Start the color fill and put the pen down
+    # TODO: Start the color fill and put the pen down
     turtle.begin_fill()
     turtle.down()
-    # TO-DO: Draw the triangle (Hint: make sure to return to where you started drawing the triangle!)
+    # TODO: Draw the triangle (Hint: make sure to return to where you started drawing the triangle!)
     turtle.forward(length)
     turtle.right(120)
     turtle.forward(length)
@@ -82,10 +86,10 @@ def draw_depth_3(length):
 
 # Make recursive!
 def draw_rec(length, depth):
-    # TO-DO: Create the base case
+    # TODO: Create the base case
     if depth == 1:
         draw_depth_1(length)
-    # TO-DO: Create the recursive case
+    # TODO: Create the recursive case
     # Hint: Use the repetitive structure you've seen. Don't forget what makes something recursive!
     else:
         draw_rec(length, 1)
@@ -117,9 +121,9 @@ def draw_rec(length, depth):
 
 
 def main():
-    # TO-DO: Get a length distance from the user
+    # TODO: Get a length distance from the user
     length = int(input("Enter a length: "))
-    # TO-DO: Get a recursive depth from the user
+    # TODO: Get a recursive depth from the user
     depth = int(input("Enter a recursive depth: "))
     turtle.speed(0)
     turtle.fillcolor("black")

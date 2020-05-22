@@ -1,5 +1,6 @@
 """
-Recursive turtle drawing to make a bunch of upside down
+Recursive turtle drawing to make a bunch of triangles upside-down
+Created by Emma Lubes, eml5244, for the Academic Success Center Supplemental Instruction Program.
 """
 import turtle
 
