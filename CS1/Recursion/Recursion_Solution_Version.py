@@ -88,7 +88,7 @@ def draw_rec(length, depth):
     # TO-DO: Create the recursive case
     # Hint: Use draw_depth_1 and the repetitive structure you've seen. Don't forget what makes something recursive!
     else:
-        draw_depth_1(length)
+        draw_rec(length, 1)
         turtle.forward(length/2)
         turtle.left(120)
         turtle.forward(length/2)
@@ -117,12 +117,12 @@ def draw_rec(length, depth):
 
 
 def main():
-    turtle.speed(0)
-    turtle.fillcolor("black")
     # TO-DO: Get a length distance from the user
     length = int(input("Enter a length: "))
     # TO-DO: Get a recursive depth from the user
     depth = int(input("Enter a recursive depth: "))
+    turtle.speed(0)
+    turtle.fillcolor("black")
     draw_rec(length, depth)
     turtle.done()
 
