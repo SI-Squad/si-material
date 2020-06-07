@@ -1,0 +1,7 @@
+Dog, W, 5
+Cat, W, 4
+Turtle, S, 10
+Dog, B, 15
+Cat, B, 12
+Fish, S, 50
+Bird, F, 7
