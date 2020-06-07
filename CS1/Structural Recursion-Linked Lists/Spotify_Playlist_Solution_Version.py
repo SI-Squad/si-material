@@ -20,17 +20,27 @@ class LinkedNode:
     next: Union["LinkedNode", None]
 
 
-def create_playlist(filename):
+"""
+Reads through the file to end up with a list of song dictionaries
+e.g. [{"Sandstorm", Darude}, {"All Star", Smash Mouth}]
+"""
+def read_file(filename):
+    all_songs = []
     with open(filename) as f:
+        # TODO: Iterate through the file, put each song and artist into their own dictionary, and then append the
+        # TODO: dictionary to the full list of songs
         for line in f:
             song_info = {}
             line = line.strip().split(", ")
-            print(line)
-
-
+            song = line[0]
+            artist = line[1]
+            song_info[song] = artist
+            all_songs.append(song_info)
+    return all_songs
 
 
 def main():
-    create_playlist("playlist.txt")
+    read_file("playlist.txt")
+
 
 main()
