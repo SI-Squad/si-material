@@ -17,11 +17,6 @@ from dataclasses import dataclass
 from operator import attrgetter
 
 # TODO: Make the dataclass that will best fit Mrs.Puff's needs for her Pet Store!
-@dataclass
-class PetInfo:
-    name: str
-    location: str
-    count: int
 
 
 """
@@ -33,10 +28,6 @@ def readfile_separate(filename):
         pets = []
         # TODO: Iterate through the file and put the information into the list!
         # Hint: Make sure you use the dataclass you created!
-        for line in f:
-            line = line.strip()
-            fields = line.split(", ")
-            pets.append(PetInfo(fields[0], fields[1], int(fields[2])))
         return pets
 
 
@@ -57,13 +48,6 @@ def readfile_together(filename):
         pets = {}
         # TODO: Iterate through the file and put the information in a dictionary
         # Hint: Make sure to check whether or not the species is already in the dictionary!
-        for line in f:
-            line = line.strip()
-            fields = line.split(", ")
-            if fields[0] not in pets:
-                pets[fields[0]] = int(fields[2])
-            else:
-                pets[fields[0]] += int(fields[2])
         return pets
 
 
