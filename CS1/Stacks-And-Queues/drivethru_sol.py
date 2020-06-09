@@ -20,8 +20,8 @@ def place_order(drivethru, car):
     Returns True if succesful, False otherwise
     """
     if front(drivethru) == car:
-        return True
         dequeue(drivethru)
+        return True
     else:
         return False
 
