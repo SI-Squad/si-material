@@ -11,6 +11,7 @@ import java.util.*;
 /**
  * This class implements the necessary methods to solve a KenKen puzzle
  * using the Backtracking interface from the CS department.
+ * Created by Yancarlos Diaz, yxd3549, for the Academic Success Center Supplemental Instruction Program.
  */
 public class KenKenConfiguration implements Configuration {
 

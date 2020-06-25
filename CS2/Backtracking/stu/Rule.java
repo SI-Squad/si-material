@@ -5,6 +5,7 @@ import java.util.Collections;
 
 /**
  * This class represents one of the rules or regions in a KenKen puzzle
+ * Created by Yancarlos Diaz, yxd3549, for the Academic Success Center Supplemental Instruction Program.
  */
 public class Rule {
 
