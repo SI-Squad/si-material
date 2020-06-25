@@ -1,4 +1,4 @@
-package Backtracking;
+package Backtracking.sol;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,19 +30,27 @@ public class Rule {
      */
     public boolean isSatisfied(int[][] board){
         ArrayList<Integer> numbers = new ArrayList<>();
-        // TODO: Get all the numbers from the board and stored them in the numbers array
 
+        for (Coordinate cell : cells) {
+            numbers.add(board[cell.getRow()][cell.getCol()]);
+        }
 
         // This line sorts the array in descending order so that the subtraction
         // works properly
         Collections.sort(numbers, Collections.reverseOrder());
 
-        // TODO: Check which operation we're dealing with
-        //  If we have a sum, we want to sum all the numbers
-        //      If they add up to the goal, this rule is satisfied
-        //  If we have a subtraction, we want to subtract all the small numbers from the biggest one
-        //      If the result is the goal, this rule is satisfied
+        int total = numbers.get(0);
+        if (operation == (Operation.SUBTRACTION)) {
+            for (int i = 1; i < numbers.size(); i++) {
+                total -= numbers.get(i);
+            }
+        }
+        else if (operation == (Operation.SUM)) {
+            for (int i = 1; i < numbers.size(); i++) {
+                total += numbers.get(i);
+            }
+        }
 
-        return false;
+        return total == goal;
     }
 }

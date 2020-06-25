@@ -1,4 +1,4 @@
-package Backtracking;
+package Backtracking.stu;
 
 /**
  * An Enum to represent the operations we can support in our puzzle

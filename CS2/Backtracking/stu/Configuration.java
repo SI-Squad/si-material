@@ -1,4 +1,4 @@
-package Backtracking;
+package Backtracking.stu;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package Backtracking;
+package Backtracking.sol;
 
 import java.util.Optional;
 

@@ -1,14 +1,18 @@
-package Backtracking;
+package Backtracking.sol;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Scanner;
 import java.util.*;
 
 /**
  * This class implements the necessary methods to solve a KenKen puzzle
  * using the Backtracking interface from the CS department.
  */
-public class KenKenConfiguration implements Configuration{
+public class KenKenConfiguration implements Configuration {
 
     /* A 2d array to represent the board */
     private int[][] board;
@@ -66,26 +70,27 @@ public class KenKenConfiguration implements Configuration{
 
     /**
      * A copy constructor to copy all the state by value and not by reference
-     * TODO: Group A
      */
     public KenKenConfiguration(KenKenConfiguration kenKenConfiguration){
-        // TODO: Let's move our 'cursor' forward. If the kenKenConfiguration passed in
-        //  is at position (1,2), we'll want to move it -this- cursor to (1,3).
-        //  however, keep in mind that if you're at an edge, say
-        //  (1, 3) in a 4x4 board, you'll want to increment the row by one
-        //  and reset the column to 0
+
         if (kenKenConfiguration.currentCol == kenKenConfiguration.dim - 1) {
+            this.currentCol = 0;
+            this.currentRow = kenKenConfiguration.currentRow + 1;
         }
         else {
+            this.currentCol = kenKenConfiguration.currentCol + 1;
+            this.currentRow = kenKenConfiguration.currentRow;
         }
 
-        // TODO: Copy all the primitive fields from the configuration passed in
-        //  to -this- configuration.
+        this.board = new int[kenKenConfiguration.dim][kenKenConfiguration.dim];
+        for (int row = 0; row < kenKenConfiguration.dim; row++) {
+            for (int col = 0; col < kenKenConfiguration.dim; col++) {
+                this.board[row][col] = kenKenConfiguration.board[row][col];
+            }
+        }
 
-
-        // TODO: Now think about the fields that aren't primitives
-        //  remember that if those fields can change, you need to deep-copy them
-        //  but if they never change, you can copy them just like a primitive field
+        this.rules = kenKenConfiguration.rules;
+        this.dim = kenKenConfiguration.dim;
 
     }
 
@@ -112,14 +117,16 @@ public class KenKenConfiguration implements Configuration{
     @Override
     public Collection<Configuration> getSuccessors() {
         ArrayList<Configuration> successors = new ArrayList<>();
-        // TODO: If we're at the end (i.e, if the current row is equal to the dimension of the board)
-        //  return an empty list of successors
 
+        if (this.currentRow == this.dim) {
+            return successors;
+        }
 
-        // TODO: Otherwise, create the next generation of successors
-        //  Think about how many successors we will generate; you'll need to iterate that many times
-        //  You'll have to create a copy of the current configuration, how do we do that?
-        //  Every copy will then only be slightly different from each other, how?
+        for (int i = 1; i <= this.dim; i++) {
+            KenKenConfiguration newConfig = new KenKenConfiguration(this);
+            newConfig.board[this.currentRow][this.currentCol] = i;
+            successors.add(newConfig);
+        }
 
         return successors;
     }
@@ -127,36 +134,51 @@ public class KenKenConfiguration implements Configuration{
     /**
      * Returns whether this configuration is valid or not
      * Used for pruning
-     * TODO: Group A or B, whoever gets it first!
      * @return
      */
     @Override
     public boolean isValid() {
-        // TODO: Check that no number is repeated in any row
-        //  What kind of data structure can we use to store elements and
-        //  efficiently find out if we have already seen them?
-        //  Note: Remember the default number in our board is 0
+        for(int i = 0; i < dim; i++){
+            TreeSet<Integer> numbers = new TreeSet<>();
+            for(int j =0; j < dim; j++){
+                int number = this.board[i][j];
+                if(number != 0 && numbers.contains(number)){
+                    return false;
+                }
+                numbers.add(number);
+            }
+        }
 
-
-        // TODO: Check that no number is repeated in any column
-
+        for(int i = 0; i < dim; i++){
+            TreeSet<Integer> numbers = new TreeSet<>();
+            for(int j =0; j < dim; j++){
+                int number = this.board[j][i];
+                if(number != 0 && numbers.contains(number)){
+                    return false;
+                }
+                numbers.add(number);
+            }
+        }
 
         return true;
     }
 
     /**
      * Return whether this configuration is a goal
-     * TODO: Group B
      */
     @Override
     public boolean isGoal() {
-        // TODO: Check if we're at the end.
-        //  If we're not, we know for sure this configuration is not a goal
 
-        // TODO: Otherwise, check that all the rules are satisfied with this board
-        //  This should be easy with your helper function!
+        if (currentRow != dim) {
+            return false;
+        }
 
+        for (Rule rule: rules) {
 
+            if (!(rule.isSatisfied(this.board))) {
+                return false;
+            }
+        }
 
         return true;
     }

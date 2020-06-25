@@ -1,4 +1,4 @@
-package Backtracking;
+package Backtracking.sol;
 
 /**
  * This class is used to represent a coordinate in a grid.
