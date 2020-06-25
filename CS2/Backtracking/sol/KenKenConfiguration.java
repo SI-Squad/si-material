@@ -189,7 +189,7 @@ public class KenKenConfiguration implements Configuration {
      * @param args
      */
     public static void main(String[] args) {
-        KenKenConfiguration configuration = new KenKenConfiguration("5x.txt");
+        KenKenConfiguration configuration = new KenKenConfiguration("3x3.txt");
         Backtracker backtracker = new Backtracker(false);
         Optional<Configuration> solution = backtracker.solve(configuration);
         if(solution.isPresent()){
