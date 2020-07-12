@@ -10,6 +10,7 @@ Created by Emma Lubes, eml5244, for the Academic Success Center Supplemental Ins
 """
 from dataclasses import dataclass
 from typing import Any, Union
+from time import sleep
 
 
 # TODO: Create the dataclass for you linked node structure.
@@ -22,7 +23,7 @@ class LinkedNode:
 
 """
 Reads through the file to end up with a list of song dictionaries
-e.g. [{"Sandstorm", Darude}, {"All Star", Smash Mouth}]
+e.g. [{"Sandstorm":Darude}, {"All Star":Smash Mouth}]
 """
 def read_file(filename):
     all_songs = []
@@ -39,8 +40,39 @@ def read_file(filename):
     return all_songs
 
 
-def main():
-    read_file("playlist.txt")
+def convert_to_playlist(song_list):
+    if len(song_list) is 0:
+        return None
+    else:
+        return LinkedNode(song_list[0], convert_to_playlist(song_list[1:]))
 
+
+def remove_song(playlist, name):
+    if playlist is None:
+        return IndexError("There are no songs in the playlist to delete!")
+    elif name in playlist.value.keys():
+        return playlist.next
+    else:
+        return LinkedNode(playlist.value, remove_song(playlist.next, name))
+
+
+def play_playlist(playlist):
+    while playlist is not None:
+        song_info = playlist.value
+        for key in song_info:
+            print("Now Playing ", key, " by ", song_info.get(key))
+        playlist = playlist.next
+        sleep(2)
+
+
+def main():
+    all_songs = read_file("playlist.txt")
+    playlist = convert_to_playlist(all_songs)
+    print(playlist)
+    play_playlist(playlist)
+    playlist = remove_song(playlist, '"Never Gonna Give You Up"')
+    print(playlist)
+    playlist = remove_song(playlist, '"Sandstorm"')
+    print(playlist)
 
 main()
