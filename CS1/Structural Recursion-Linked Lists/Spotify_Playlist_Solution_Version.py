@@ -8,9 +8,16 @@ You'll first need to create the playlist from a text file. The text file is in t
 This is the solution version for the Spotify Playlist.
 Created by Emma Lubes, eml5244, for the Academic Success Center Supplemental Instruction Program.
 """
+# TODO: Import the correct imports for databases!
 from dataclasses import dataclass
 from typing import Any, Union
 from time import sleep
+
+
+@dataclass()
+class Song:
+    name: str
+    artist: str
 
 
 # TODO: Create the dataclass for you linked node structure.
@@ -28,20 +35,17 @@ e.g. [{"Sandstorm":Darude}, {"All Star":Smash Mouth}]
 def read_file(filename):
     all_songs = []
     with open(filename) as f:
-        # TODO: Iterate through the file, put each song and artist into their own dictionary, and then append the
-        # TODO: dictionary to the full list of songs
+        # TODO: Iterate through the file, put each song and artist into an instance of their dataclass, and then append
+        # TODO: to the full list of songs
         for line in f:
-            song_info = {}
             line = line.strip().split(", ")
-            song = line[0]
-            artist = line[1]
-            song_info[song] = artist
-            all_songs.append(song_info)
+            song = Song(line[0], line[1])
+            all_songs.append(song)
     return all_songs
 
 
 """
-Takes the created list of song dictionaries and puts them into the linked node structure playlist
+Takes the created list of Songs and puts them into the linked node structure playlist
 """
 def convert_to_playlist(song_list):
     # TODO: Check to make sure the song list isn't empty and create the LinkedNode structure playlist
@@ -60,7 +64,7 @@ def remove_song(playlist, name):
     if playlist is None:
         return IndexError("There are no songs in the playlist to delete!")
     # TODO: Check if the song to be deleted is the current song in the playlist
-    elif name in playlist.value.keys():
+    elif name in playlist.value.name:
         return playlist.next
     # TODO: Move on to the next song in the playlist (Hint: recursion!)
     else:
@@ -74,35 +78,26 @@ def play_playlist(playlist):
     # TODO: Loop through the playlist and play the songs! Don't forget to sleep!
     while playlist is not None:
         song_info = playlist.value
-        for key in song_info:
-            print("Now Playing ", key, " by ", song_info.get(key))
+        print("Now Playing ", song_info.name, " by ", song_info.artist)
         playlist = playlist.next
         sleep(2)
+
 
 """
 Adds a song to the playlist at a certain index
 """
 def add_song(playlist, name, artist, index):
-    # TODO: Check if the playlist is empty. If so, create the song dictionary and add it to the structure there
+    # TODO: Check if the playlist is empty. If so, create the Song instance and add it to the structure there
     if playlist is None:
-        song_info = create_dict(name, artist)
+        song_info = Song(name, artist)
         return LinkedNode(song_info, None)
-    # TODO: Check if the playlist is at the correct index. If so, create the song dictionary and add it to the structure
+    # TODO: Check if the playlist is at the correct index. If so, create the Song instance and add it to the structure
     elif index == 0:
-        song_info = create_dict(name, artist)
+        song_info = Song(name, artist)
         return LinkedNode(song_info, playlist)
     # TODO: Move to the next song in the playlist
     else:
         return LinkedNode(playlist.value, add_song(playlist.next, name, artist, index-1))
-
-
-"""
-Helper function for all the times a dictionary needs to be created after the original read file is done
-"""
-def create_dict(name, artist):
-    song_info = {}
-    song_info[name] = artist
-    return song_info
 
 
 def main():
