@@ -1,0 +1,90 @@
+package GUI.sol.server;
+
+import GUI.TicTacException;
+import GUI.TicTacProtocol;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * The TicTacServer waits for incoming client connections and
+ * pairs them off to play TicTacrGame games.
+ */
+public class TicTacServer implements TicTacProtocol, Runnable {
+    /**
+     * The ServerSocket used to wait for incoming client connections.
+     */
+    private ServerSocket server;
+
+    /**
+     * Creates a new TicTacServer that listens for incoming
+     * connections on the specified port.
+     *
+     * @param port The port on which the server should listen for incoming
+     *             connections.
+     * @throws TicTacException If there is an error creating the ServerSocket
+     */
+    public TicTacServer(int port) throws TicTacException {
+        try {
+            server = new ServerSocket(port);
+        } catch (IOException e) {
+            throw new TicTacException(e);
+        }
+    }
+
+    /**
+     * Starts a new TicTacServer. Simply creates the server and
+     * calls {@link #run()} in the main thread.
+     *
+     * @param args Used to specify the port on which the server should listen
+     *             for incoming client connections.
+     * @throws TicTacException If there is an error starting the server.
+     */
+    public static void main(String[] args) throws TicTacException {
+
+        if (args.length != 1) {
+            System.out.println("Usage: java TicTacServer <port>");
+            System.exit(1);
+        }
+
+        int port = Integer.parseInt(args[0]);
+        TicTacServer server = new TicTacServer(port);
+        server.run();
+    }
+
+    /**
+     * Waits for two clients to connect. Creates a TicTacPlayer
+     * for each and then pairs them off in a TicTacGame.<P>
+     */
+    @Override
+    public void run() {
+        try {
+            System.out.println("Waiting for player one...");
+            Socket playerOneSocket = server.accept();
+            TicTacPlayer playerOne =
+                    new TicTacPlayer(playerOneSocket);
+            playerOne.connect();
+            System.out.println("Player one connected!");
+
+            System.out.println("Waiting for player two...");
+            Socket playerTwoSocket = server.accept();
+            TicTacPlayer playerTwo =
+                    new TicTacPlayer(playerTwoSocket);
+            playerTwo.connect();
+            System.out.println("Player two connected!");
+
+            System.out.println("Starting game!");
+            TicTacGame game =
+                    new TicTacGame(playerOne, playerTwo);
+            // server is not multithreaded
+            new Thread(game).run();
+        } catch (IOException e) {
+            System.err.println("Something has gone horribly wrong!");
+            e.printStackTrace();
+        } catch (TicTacException e) {
+            System.err.println("Failed to create players!");
+            e.printStackTrace();
+        }
+    }
+}
