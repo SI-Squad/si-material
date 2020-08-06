@@ -1,0 +1,87 @@
+package GUI.sol.server;
+
+import GUI.sol.TicTacException;
+
+/**
+ * TicTacToe game.
+ * @author CS department
+ * @author Emma Lubes, eml5244, for the Academic Success Center Supplemental Instruction Program
+ */
+public class TicTacGame implements Runnable {
+    /** first player */
+    private TicTacPlayer playerOne;
+    /** second player */
+    private TicTacPlayer playerTwo;
+
+    /** the game model */
+    private TicTacToe game;
+
+    /**
+     * Initialize the game.
+     *
+     * @param playerOne first player
+     * @param playerTwo second player
+     */
+    public TicTacGame(TicTacPlayer playerOne,
+                           TicTacPlayer playerTwo) {
+
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+
+        game = new TicTacToe();
+    }
+
+    @Override
+    public void run() {
+        boolean go = true;
+        while(go) {
+            try {
+                if(makeMove(playerOne, playerTwo)) {
+                    go = false;
+                }
+                else if(makeMove(playerTwo, playerOne)) {
+                    go = false;
+                }
+            }
+            catch(TicTacException e) {
+                playerOne.error(e.getMessage());
+                playerTwo.error(e.getMessage());
+                go = false;
+            }
+        }
+
+        playerOne.close();
+        playerTwo.close();
+    }
+
+    /**
+     * Make a move in the game.
+     *
+     * @param turn this player's turn
+     * @param other the other player
+     * @return whether the game was won or not
+     * @throws ConnectFourException
+     */
+    private boolean makeMove(TicTacPlayer turn, TicTacPlayer other)
+            throws TicTacException {
+
+        int[] location = turn.makeMove();
+        game.makeMove(row, column);
+
+        turn.moveMade(row, column);
+        other.moveMade(row, column);
+
+        if (game.hasWonGame()) {
+            turn.gameWon();
+            other.gameLost();
+            return true;
+        } else if (game.hasTiedGame()) {
+            turn.gameTied();
+            other.gameTied();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+}
