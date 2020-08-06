@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author James Heloitis @ RIT CS
  * @author Sean Strout @ RIT CS
- * @author Emma Lubes for the Academic Success Center Supplemental Instruction Program
+ * @author Emma Lubes, eml5244, for the Academic Success Center Supplemental Instruction Program
  */
 public class TicTacBoard {
     /** the number of rows */
