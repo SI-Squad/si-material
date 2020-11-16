@@ -1,0 +1,202 @@
+"""
+This program creates random binary trees, binary search trees, and draws them in turtle
+It also has a balance feature that works on int binary search trees.
+
+Lesson Usage: You could use this program to generate binary search trees
+to use as examples and read through them in pre/post/inorder.
+
+There are also several functions and features you can leave out and work on with the students
+to create.
+here is a list of functions ranking from easiest to hardest that could be worked on
+reminder that they are already implemented in this program. you  can either delete them, or
+use codeinterview.io an have the students just program it in there
+    easiest
+    height - calculates height of a bst
+    lst_inorder - converts a bst into a list read inorder
+    random_bst - generates a random bst
+    balance and build_tree - balances a binary search tree (uses lst_inorder to convert tree into a list)
+    hardest
+
+
+
+Created by Jonathon LoTempio, for the Academic Success Center Supplemental Instruction Program.
+"""
+from dataclasses import dataclass
+import turtle as t
+import random as r
+from typing import Union
+
+"""the tree dataclass. Has the ability so take in strings, 
+but the program by default only generates numbers"""
+@dataclass()
+class tree:
+    value: Union["int","str"]
+    left: Union[None,"tree"]
+    right: Union[None,"tree"]
+
+"""makes sure there is enough space between trees
+Should minimize the code because It looks horrible and
+isn't important
+"""
+def draw_tree(tree):
+    t.speed(0)
+    t.up()
+    t.goto(0,200)
+    t.setheading(270)
+    t.down()
+    tree_drawer(tree,(height(tree)-1)*25)
+
+
+"""draws a tree in turtle
+also should be minimized because It looks horrible and 
+isn't important"""
+def tree_drawer(tree,size):
+    t.rt(90)
+    t.circle(20)
+    t.lt(90)
+    t.up()
+    t.fd(25)
+    t.lt(90)
+    t.down()
+    t.write(tree.value)
+    t.up()
+    t.lt(90)
+    t.fd(25)
+    t.lt(90)
+    t.circle(20,120)
+
+    if(tree.left != None):
+        t.rt(90)
+        t.down()
+        t.fd(size)
+        t.lt(30)
+        t.bk(5)
+        t.fd(5)
+        t.rt(60)
+        t.bk(5)
+        t.fd(5)
+        t.lt(45)
+        t.setheading(270)
+        tree_drawer(tree.left,size/3)
+        t.rt(60)
+        t.bk(size)
+        t.lt(90)
+    t.up()
+    t.circle(20,120)
+    t.down()
+
+    if (tree.right != None):
+        t.rt(90)
+        t.fd(size)
+        t.lt(30)
+        t.bk(5)
+        t.fd(5)
+        t.rt(60)
+        t.bk(5)
+        t.fd(5)
+        t.lt(45)
+        t.setheading(270)
+        tree_drawer(tree.right,size/3)
+        t.lt(60)
+        t.bk(size)
+        t.lt(90)
+    t.circle(20,120)
+    t.lt(90)
+
+
+
+"""
+creates a binary search tree with "n" amount 
+of elements, starts at zero so if n= 6, will have 0-5
+"""
+def random_bst(n):
+    tree1 =  None
+    lst = []
+    for i in range(n):
+        lst.append(i)
+
+    r.shuffle(lst)
+    for i in lst:
+        tree1 = insert(tree1,i)
+    return tree1
+
+
+
+"""
+inserts a value into a binary search tree
+"""
+def insert(tree1,val):
+    if tree1 == None:
+        return tree(val,None,None)
+
+    elif val < tree1.value:
+        return tree(tree1.value,insert(tree1.left,val),tree1.right)
+    else:
+        return tree(tree1.value,tree1.left,insert(tree1.right,val))
+
+"""
+calculates the height of a binary tree,
+empty trees height is 0
+"""
+def height(tree):
+    if tree == None:
+        return 0
+    else:
+        return max(1+height(tree.left),1+height(tree.right))
+
+
+
+"""
+converts a tree into a list inorder
+so a bst should return an ordered list
+extend is important to remember
+"""
+def lst_inorder(tree):
+    if tree == None:
+        return []
+    else:
+        lst = []
+        lst.extend(lst_inorder(tree.left))
+        lst.append(tree.value)
+        lst.extend(lst_inorder(tree.right))
+        return lst
+
+
+"""allows someone to balance a bst by converting it
+into an ordered list and then using build_tree"""
+def balance(tree):
+    lst1 = lst_inorder(tree)
+    return build_tree(lst1)
+
+"""converts a list into a tree, if ordered will create a balanced tree """
+def build_tree(lst, left=None,right=None):
+    if(len(lst)==0):
+        return None
+    if len(lst) == 1:
+        return tree(lst[0],left,right)
+    middle = len(lst) // 2
+    lst_left = lst[:middle]
+    lst_right = lst[middle+1:]
+    return tree(lst[middle],build_tree(lst_left),build_tree(lst_right))
+
+
+
+
+def main():
+    num = int(input("how many elements in the bst?\nrecommended not to go over 20\nnum: "))
+    bal = ""
+    tree1 = random_bst(num)
+    see = input("want to see random bst? y/n")
+    if see == "y":
+        draw_tree(tree1)
+    while bal != "y" and bal != "n":
+        bal = input("do you want to balance it? y/n?")
+    if bal == "y":
+        t.clear()
+        tree2 = balance(tree1)
+        draw_tree(tree2)
+    t.done()
+
+
+if __name__ == "__main__":
+    main()
